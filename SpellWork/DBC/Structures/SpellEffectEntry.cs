@@ -7,6 +7,7 @@ namespace SpellWork.DBC.Structures
     public sealed class SpellEffectEntry
     {
         public uint Id;
+        public uint Unk; // Pandaria, difficulty?
         public uint Type;
         public float ValueMultiplier;
         public uint ApplyAuraName;
@@ -24,21 +25,30 @@ namespace SpellWork.DBC.Structures
         public uint RadiusIndex;
         public uint RadiusMaxIndex;
         public float RealPointsPerLevel;
-        [StoragePresence(StoragePresenceOption.Include, ArraySize = 3)]
+        [StoragePresence(StoragePresenceOption.Include, ArraySize = 4)]
         public uint[] SpellClassMask;
         public uint TriggerSpell;
+        public uint Unk1; // Pandaria
         public uint ImplicitTargetA;
         public uint ImplicitTargetB;
         public uint SpellId;
         public uint Index;
         public uint Unk0;
 
-        [StoragePresence(StoragePresenceOption.Exclude)]
-        public float ScalingMultiplier;
-        [StoragePresence(StoragePresenceOption.Exclude)]
-        public float RandomPointsScalingMultiplier;
-        [StoragePresence(StoragePresenceOption.Exclude)]
-        public float ComboPointsScalingMultiplier;
+        public SpellEffectScalingEntry SpellEffectScalingEntry
+        {
+            get
+            {
+                foreach (var scale in DBC.SpellEffectScaling)
+                {
+                    if (scale.SpellEffectId == Id)
+                    {
+                        return scale;
+                    }
+                }
+                return null;
+            }
+        }
 
         public string MaxRadius
         {

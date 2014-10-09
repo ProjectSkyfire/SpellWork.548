@@ -4,28 +4,61 @@ namespace SpellWork.Spell
 {
     // ReSharper disable InconsistentNaming
     /// <summary>
+    /// 
+    /// </summary>
+    public enum Difficulty
+    {
+        RegularDifficulty = 0,
+        DungeonDifficulty_Normal = 1,
+        DungeonDifficulty_Heroic = 2,
+        RaidDifficulty_10man_Normal = 3,
+        RaidDifficulty_25man_Normal = 4,
+        RaidDifficulty_10man_Heroic = 5,
+        RaidDifficulty_25man_Heroic = 6,
+        RaidDifficulty_25man_LFR = 7,
+        DungeonDifficulty_Challenge = 8,
+        RaidDifficulty_40man = 9,
+        Difficulty_none_1 = 10,
+        ScenarioDifficulty_Heroic = 11,
+        ScenarioDifficulty_Normal = 12,
+        Difficulty_none_2 = 13,
+        RaidDifficulty_10man_Flex = 14,
+        total = 15
+    };
+
+    /// <summary>
     ///
     /// </summary>
     public enum SpellFamilyNames
     {
-        SPELLFAMILY_GENERIC     = 0,
-        SPELLFAMILY_UNK1        = 1, // events, holidays
+        SPELLFAMILY_GENERIC = 0,
+        SPELLFAMILY_EVENTS = 1, // events, holidays
         // unused               = 2,
-        SPELLFAMILY_MAGE        = 3,
-        SPELLFAMILY_WARRIOR     = 4,
-        SPELLFAMILY_WARLOCK     = 5,
-        SPELLFAMILY_PRIEST      = 6,
-        SPELLFAMILY_DRUID       = 7,
-        SPELLFAMILY_ROGUE       = 8,
-        SPELLFAMILY_HUNTER      = 9,
-        SPELLFAMILY_PALADIN     = 10,
-        SPELLFAMILY_SHAMAN      = 11,
-        SPELLFAMILY_UNK2        = 12, // 2 spells (silence resistance)
-        SPELLFAMILY_POTION      = 13,
+        SPELLFAMILY_MAGE = 3,
+        SPELLFAMILY_WARRIOR = 4,
+        SPELLFAMILY_WARLOCK = 5,
+        SPELLFAMILY_PRIEST = 6,
+        SPELLFAMILY_DRUID = 7,
+        SPELLFAMILY_ROGUE = 8,
+        SPELLFAMILY_HUNTER = 9,
+        SPELLFAMILY_PALADIN = 10,
+        SPELLFAMILY_SHAMAN = 11,
+        SPELLFAMILY_UNK2 = 12, // 2 spells (silence resistance)
+        SPELLFAMILY_POTION = 13,
         // unused               = 14,
         SPELLFAMILY_DEATHKNIGHT = 15,
         // unused               = 16,
-        SPELLFAMILY_PET         = 17
+        SPELLFAMILY_PET = 17,
+        SPELLFAMILY_TOTEMS = 50,     // new totem spells?
+        SPELLFAMILY_UNK52 = 52,     // 
+        SPELLFAMILY_MONK = 53,     // 
+        SPELLFAMILY_UNK54 = 54,     // no spells
+        SPELLFAMILY_WARLOCK_PET = 57,     // only warlock pet spells
+        SPELLFAMILY_UNK66 = 66,     // 2 spells
+        SPELLFAMILY_UNK71 = 71,     // 2 spells
+        SPELLFAMILY_UNK78 = 78,     // only  Zhao-Jin's spear spell
+        SPELLFAMILY_UNK91 = 91,     // only Gara'jal the Spiritbinder spells
+        SPELLFAMILY_UNK100 = 100,   // smoke bomb
     };
 
     /// <summary>

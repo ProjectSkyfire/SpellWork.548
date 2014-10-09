@@ -7,14 +7,15 @@
         public uint ZoneId;
         public uint ExploreFlag;
         public uint Flags;
+        public uint UnkPandaria1;
         public uint SoundPreferences;
         public uint SoundPreferencesUnderwater;
         public uint SoundAmbience;
+        public string Name2; // without whitespaces
         public uint ZoneMusic;
         public uint ZoneIntroMusicTable;
         public int Level;
         public string Name;
-        public uint StringFlags;
         public uint FactionFlags;
         public uint LiquidType1;
         public uint LiquidType2;
@@ -28,5 +29,8 @@
         public uint UnkCataclysm3;
         public uint UnkCataclysm4;
         public uint UnkCataclysm5;
+        public uint UnkPandaria2;
+        public uint UnkPandaria3;
+        public uint UnkPandaria4;
     }
 }

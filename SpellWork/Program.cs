@@ -29,11 +29,11 @@ namespace SpellWork
             {
                 MessageBox.Show(ae.Message, @"DBC file has wrong structure!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, @"SpellWork Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    MessageBox.Show(ex.ToString());
-            //}
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"SpellWork Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

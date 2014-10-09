@@ -11,13 +11,12 @@ namespace SpellWork.DBC
 {
     public static class DBC
     {
-        public const string Version = "SpellWork 4.3.4 (15595)";
+        public const string Version = "SpellWork 5.4.8 (18414)";
         public const string DbcPath = @"dbc";
-        public const uint MaxLevel  = 85;
+        public const uint MaxLevel  = 90;
 
         public const int MaxDbcLocale                 = 16;
-        public const int MaxReagentCount              = 8;
-        public const int MaxEffectIndex               = 3;
+        //public const int MaxEffectIndex               = 32;
         public const int SpellEntryForDetectLocale    = 1;
 
         public static DBCStorage<AreaGroupEntry> AreaGroup = new DBCStorage<AreaGroupEntry>();
@@ -36,32 +35,35 @@ namespace SpellWork.DBC
         public static DBCStorage<SpellClassOptionsEntry> SpellClassOptions = new DBCStorage<SpellClassOptionsEntry>();
         public static DBCStorage<SpellCooldownsEntry> SpellCooldowns = new DBCStorage<SpellCooldownsEntry>();
         public static DBCStorage<SpellDescriptionVariablesEntry> SpellDescriptionVariables = new DBCStorage<SpellDescriptionVariablesEntry>();
-        public static DBCStorage<SpellDifficultyEntry> SpellDifficulty = new DBCStorage<SpellDifficultyEntry>();
         public static DBCStorage<SpellDurationEntry> SpellDuration = new DBCStorage<SpellDurationEntry>();
         public static DBCStorage<SpellEffectEntry> SpellEffect = new DBCStorage<SpellEffectEntry>();
+        public static DBCStorage<SpellEffectScalingEntry> SpellEffectScaling = new DBCStorage<SpellEffectScalingEntry>();
+        public static DBCStorage<SpellMiscEntry> SpellMisc = new DBCStorage<SpellMiscEntry>();
         public static DBCStorage<SpellEquippedItemsEntry> SpellEquippedItems = new DBCStorage<SpellEquippedItemsEntry>();
         public static DBCStorage<SpellInterruptsEntry> SpellInterrupts = new DBCStorage<SpellInterruptsEntry>();
         public static DBCStorage<SpellLevelsEntry> SpellLevels = new DBCStorage<SpellLevelsEntry>();
-        public static DBCStorage<SpellMissileEntry> SpellMissile = new DBCStorage<SpellMissileEntry>();
-        public static DBCStorage<SpellMissileMotionEntry> SpellMissileMotion = new DBCStorage<SpellMissileMotionEntry>();
         public static DBCStorage<SpellPowerEntry> SpellPower = new DBCStorage<SpellPowerEntry>();
+        public static Dictionary<uint, List<SpellPowerEntry>> _spellPower = new Dictionary<uint, List<SpellPowerEntry>>();
         public static DBCStorage<SpellRadiusEntry> SpellRadius = new DBCStorage<SpellRadiusEntry>();
         public static DBCStorage<SpellRangeEntry> SpellRange = new DBCStorage<SpellRangeEntry>();
-        public static DBCStorage<SpellReagentsEntry> SpellReagents = new DBCStorage<SpellReagentsEntry>();
-        public static DBCStorage<SpellRuneCostEntry> SpellRuneCost = new DBCStorage<SpellRuneCostEntry>();
         public static DBCStorage<SpellScalingEntry> SpellScaling = new DBCStorage<SpellScalingEntry>();
         public static DBCStorage<SpellShapeshiftEntry> SpellShapeshift = new DBCStorage<SpellShapeshiftEntry>();
         public static DBCStorage<SpellTargetRestrictionsEntry> SpellTargetRestrictions = new DBCStorage<SpellTargetRestrictionsEntry>();
         public static DBCStorage<SpellTotemsEntry> SpellTotems = new DBCStorage<SpellTotemsEntry>();
-        public static DBCStorage<SpellVisualEntry> SpellVisual = new DBCStorage<SpellVisualEntry>();
 
         public static DB2Storage<ItemEntry> Item = new DB2Storage<ItemEntry>();
+        public static DB2Storage<SpellReagentsEntry> SpellReagents = new DB2Storage<SpellReagentsEntry>();
+        public static DB2Storage<SpellMissileEntry> SpellMissile = new DB2Storage<SpellMissileEntry>();
+        public static DB2Storage<SpellMissileMotionEntry> SpellMissileMotion = new DB2Storage<SpellMissileMotionEntry>();
+        public static DB2Storage<SpellVisualEntry> SpellVisual = new DB2Storage<SpellVisualEntry>();
 
         [DataStoreFileName("Item-sparse")]
         public static DB2Storage<ItemSparseEntry> ItemSparse = new DB2Storage<ItemSparseEntry>();
 
         public static Dictionary<uint, SpellInfoHelper> SpellInfoStore = new Dictionary<uint, SpellInfoHelper>();
-
+        public static Dictionary<uint, List<SpellEffectEntry>> SpellEffectLists = new Dictionary<uint, List<SpellEffectEntry>>();
+        public static Dictionary<uint, List<uint>> SpellTriggerStore = new Dictionary<uint, List<uint>>();
+        
         public static void Load()
         {
             foreach (var dbc in typeof(DBC).GetFields(BindingFlags.Static | BindingFlags.Public))
@@ -78,7 +80,7 @@ namespace SpellWork.DBC
                     continue;
 
                 string name = dbc.Name;
-                
+
                 DataStoreFileNameAttribute[] attributes = dbc.GetCustomAttributes(typeof(DataStoreFileNameAttribute), false) as DataStoreFileNameAttribute[];
                 if (attributes.Length == 1)
                     name = attributes[0].FileName;
@@ -101,23 +103,35 @@ namespace SpellWork.DBC
                 }
             }
 
-            foreach (var dbcInfo in Spell.Records)
-                SpellInfoStore.Add(dbcInfo.Id, new SpellInfoHelper(dbcInfo));
-
-            foreach (var effect in SpellEffect.Records)
+            // this is to speedup spelleffect lookups
+            foreach (var effect in SpellEffect)
             {
-                if (!SpellInfoStore.ContainsKey(effect.SpellId))
-                    continue;
-
-                SpellInfoStore[effect.SpellId].Effects[effect.Index] = effect;
-                var scaling = SpellInfoStore[effect.SpellId].Scaling;
-                if (scaling != null)
+                uint EffectSpellId = effect.SpellId;
+                uint effIdx = effect.Index;
+                Difficulty diff = (Difficulty)effect.Unk;
+                if (!SpellEffectLists.ContainsKey(EffectSpellId))
                 {
-                    effect.ScalingMultiplier = scaling.Multiplier[effect.Index];
-                    effect.RandomPointsScalingMultiplier = scaling.RandomPointsMultiplier[effect.Index];
-                    effect.ComboPointsScalingMultiplier = scaling.OtherMultiplier[effect.Index];
+                    List<SpellEffectEntry> temp = new List<SpellEffectEntry>();
+                    SpellEffectLists.Add(EffectSpellId, temp);
+                }
+                SpellEffectLists[EffectSpellId].Add(effect);
+
+                // triggered spell store
+                uint triggerid = effect.TriggerSpell;
+                if (DBC.SpellTriggerStore.ContainsKey(triggerid))
+                {
+                    DBC.SpellTriggerStore[triggerid].Add(EffectSpellId);
+                }
+                else
+                {
+                    List<uint> ids = new List<uint>();
+                    ids.Add(EffectSpellId);
+                    DBC.SpellTriggerStore.Add(triggerid, ids);
                 }
             }
+
+            foreach (var dbcInfo in Spell.Records)
+                SpellInfoStore.Add(dbcInfo.Id, new SpellInfoHelper(dbcInfo));
 
             foreach (var item in ItemSparse)
             {

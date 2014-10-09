@@ -5,6 +5,7 @@
         public uint Id;
         public float Radius;
         public float RadiusPerLevel;
+        public float UnkRadius;
         public float MaxRadius;
     }
 }

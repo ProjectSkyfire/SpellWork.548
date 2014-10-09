@@ -8,6 +8,7 @@ namespace SpellWork.DBC.Structures
         public uint Quality;
         public uint Flags;
         public uint Flags2;
+        public uint Flags3;
         public float Unk1;
         public float Unk2;
         public uint BuyCount;

@@ -1,42 +1,22 @@
 ﻿using System.Linq;
 using DBFilesClient.NET;
 using System.Text;
+using System.Collections.Generic;
+using SpellWork.Spell;
 
 namespace SpellWork.DBC.Structures
 {
     public sealed class SpellEntry
     {
         public uint Id;
-        public uint Attributes;
-        public uint AttributesEx;
-        public uint AttributesEx2;
-        public uint AttributesEx3;
-        public uint AttributesEx4;
-        public uint AttributesEx5;
-        public uint AttributesEx6;
-        public uint AttributesEx7;
-        public uint AttributesEx8;
-        public uint AttributesEx9;
-        public uint AttributesEx10;
-        public uint CastingTimeIndex;
-        public uint DurationIndex;
-        public uint PowerType;
-        public uint RangeIndex;
-        public float Speed;
-        [StoragePresence(StoragePresenceOption.Include, ArraySize = 2)]
-        public uint[] SpellVisual;
-        public uint SpellIconID;
-        public uint ActiveIconID;
         public string SpellName;
         public string Rank;
         public string Description;
         public string ToolTip;
-        public uint SchoolMask;
         public uint RuneCostID;
         public uint SpellMissileID;
         public uint SpellDescriptionVariableID;
         public uint SpellDifficultyId;
-        public float Unknown3;
         public uint SpellScalingId;
         public uint SpellAuraOptionsId;
         public uint SpellAuraRestrictionsId;
@@ -44,16 +24,45 @@ namespace SpellWork.DBC.Structures
         public uint SpellCategoriesId;
         public uint SpellClassOptionsId;
         public uint SpellCooldownsId;
-        public uint Unknown4;
         public uint SpellEquippedItemsId;
         public uint SpellInterruptsId;
         public uint SpellLevelsId;
-        public uint SpellPowerId;
         public uint SpellReagentsId;
         public uint SpellShapeshiftId;
         public uint SpellTargetRestrictionsId;
         public uint SpellTotemsId;
         public uint ResearchProject;
+        public uint SpellMiscId;
+
+        /*public SpellEffectEntry SpellEffect(int index, Difficulty diff)
+        {
+            if (DBC.SpellEffects.ContainsKey(Id))
+            {
+                if (DBC.SpellEffects[Id].ContainsKey((uint)index))
+                {
+                    if (DBC.SpellEffects[Id][(uint)index].ContainsKey(diff))
+                    {
+                        return DBC.SpellEffects[Id][(uint)index][diff];
+                    }
+                }
+            }
+            return null;
+        }*/
+
+        public List<SpellPowerEntry> SpellPowerList
+        {
+            get
+            {
+                if (DBC._spellPower.ContainsKey(Id))
+                    return DBC._spellPower[Id];
+                return null;
+            }
+        }
+
+        public SpellMiscEntry MiscEntry
+        {
+            get { return SpellMiscId != 0 && DBC.SpellMisc.ContainsKey(SpellMiscId) ? DBC.SpellMisc[SpellMiscId] : null; }
+        }
 
         public SpellAuraOptionsEntry AuraOptions
         {
@@ -100,10 +109,10 @@ namespace SpellWork.DBC.Structures
             get { return SpellLevelsId != 0 && DBC.SpellLevels.ContainsKey(SpellLevelsId) ? DBC.SpellLevels[SpellLevelsId] : null; }
         }
 
-        public SpellPowerEntry Power
+        /*public SpellPowerEntry Power
         {
             get { return SpellPowerId != 0 && DBC.SpellPower.ContainsKey(SpellPowerId) ? DBC.SpellPower[SpellPowerId] : null; }
-        }
+        }*/
 
         public SpellReagentsEntry Reagents
         {

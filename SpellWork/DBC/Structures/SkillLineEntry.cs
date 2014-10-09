@@ -9,5 +9,7 @@
         public uint SpellIcon;
         public string AlternateVerb;
         public uint CanLink;
+        public uint unk1; // Pandaria
+        public uint unkFlags; // Pandaria
     }
 }

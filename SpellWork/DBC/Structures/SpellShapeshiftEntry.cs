@@ -3,8 +3,8 @@
     public sealed class SpellShapeshiftEntry
     {
         public uint Id;
-        public ulong StancesNot;
         public ulong Stances;
+        public ulong StancesNot;
         public int StanceBarOrder;
     }
 }

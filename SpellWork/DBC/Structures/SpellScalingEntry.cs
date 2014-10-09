@@ -9,13 +9,9 @@ namespace SpellWork.DBC.Structures
         public int MaxCastTime;
         public uint MaxCastTimeLevel;   // player level at which cast time reaches max value
         public int PlayerClass;
-        [StoragePresence(StoragePresenceOption.Include, ArraySize = 3)]
-        public float[] Multiplier;
-        [StoragePresence(StoragePresenceOption.Include, ArraySize = 3)]
-        public float[] RandomPointsMultiplier;
-        [StoragePresence(StoragePresenceOption.Include, ArraySize = 3)]
-        public float[] OtherMultiplier;
         public float CoefBase;
         public uint CoefLevelBase;
+        public uint Unk1; // Pandaria
+        public uint Unk2; // Pandaria
     }
 }
