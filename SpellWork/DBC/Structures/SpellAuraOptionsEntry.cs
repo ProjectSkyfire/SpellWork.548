@@ -4,7 +4,7 @@
     {
         public uint Id;
         public uint spellId;                                      // 1  - Pandaria
-        public uint unk0;                                         // 2  - Panadraia, difficulty?
+        public uint Difficulty;                                   // 2  - Pandaria, difficulty?
         public uint StackAmount;
         public uint ProcChance;
         public uint ProcCharges;

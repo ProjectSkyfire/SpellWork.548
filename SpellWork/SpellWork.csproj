@@ -19,6 +19,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -33,7 +34,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -120,6 +120,7 @@
     <Compile Include="DBC\Structures\SpellRadiusEntry.cs" />
     <Compile Include="DBC\Structures\SpellRangeEntry.cs" />
     <Compile Include="DBC\Structures\SpellReagentsEntry.cs" />
+    <Compile Include="DBC\Structures\SpellRuneCostEntry.cs" />
     <Compile Include="DBC\Structures\SpellScalingEntry.cs" />
     <Compile Include="DBC\Structures\SpellShapeshiftEntry.cs" />
     <Compile Include="DBC\Structures\SpellTargetRestrictionsEntry.cs" />
@@ -222,7 +223,7 @@
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>Профиль клиента .NET Framework</ProductName>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

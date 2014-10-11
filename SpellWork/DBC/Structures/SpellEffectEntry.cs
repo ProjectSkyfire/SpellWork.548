@@ -7,7 +7,7 @@ namespace SpellWork.DBC.Structures
     public sealed class SpellEffectEntry
     {
         public uint Id;
-        public uint Unk; // Pandaria, difficulty?
+        public uint Difficulty; // Pandaria
         public uint Type;
         public float ValueMultiplier;
         public uint ApplyAuraName;
@@ -28,7 +28,7 @@ namespace SpellWork.DBC.Structures
         [StoragePresence(StoragePresenceOption.Include, ArraySize = 4)]
         public uint[] SpellClassMask;
         public uint TriggerSpell;
-        public uint Unk1; // Pandaria
+        public uint UnkMop1; // Pandaria
         public uint ImplicitTargetA;
         public uint ImplicitTargetB;
         public uint SpellId;

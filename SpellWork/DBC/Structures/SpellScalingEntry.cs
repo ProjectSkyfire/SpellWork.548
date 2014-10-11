@@ -11,7 +11,7 @@ namespace SpellWork.DBC.Structures
         public int PlayerClass;
         public float CoefBase;
         public uint CoefLevelBase;
-        public uint Unk1; // Pandaria
-        public uint Unk2; // Pandaria
+        public uint UnkMop1; // Pandaria
+        public uint UnkMop2; // Pandaria
     }
 }

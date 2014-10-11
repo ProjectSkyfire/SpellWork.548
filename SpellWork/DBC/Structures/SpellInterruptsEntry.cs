@@ -4,7 +4,7 @@
     {
         public uint Id;
         public uint SpellId;                                      // 1  - Pandaria
-        public uint unk0;                                         // 2  - Panadraia, difficulty?
+        public uint Difficulty;                                   // 2  - Panadraia
         public uint AuraInterruptFlags;
         public uint Unknown1;
         public uint ChannelInterruptFlags;

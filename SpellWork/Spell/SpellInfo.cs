@@ -98,15 +98,30 @@ namespace SpellWork.Spell
                     _rtb.AppendFormatLine("AttributesEx9: 0x{0:X8} ({1})", _spell.AttributesEx9, (SpellAtributeEx9)_spell.AttributesEx9);
                 if (_spell.AttributesEx10 != 0)
                     _rtb.AppendFormatLine("AttributesEx10: 0x{0:X8} ({1})", _spell.AttributesEx10, (SpellAtributeEx10)_spell.AttributesEx10);
+                if (_spell.AttributesEx11 != 0)
+                    _rtb.AppendFormatLine("AttributesEx11: 0x{0:X8} ({1})", _spell.AttributesEx11, (SpellAtributeEx11)_spell.AttributesEx11);
+                if (_spell.AttributesEx12 != 0)
+                    _rtb.AppendFormatLine("AttributesEx12: 0x{0:X8} ({1})", _spell.AttributesEx12, (SpellAtributeEx12)_spell.AttributesEx12);
+                if (_spell.AttributesEx13 != 0)
+                    _rtb.AppendFormatLine("AttributesEx13: 0x{0:X8} ({1})", _spell.AttributesEx13, (SpellAtributeEx13)_spell.AttributesEx13);
 
                 _rtb.AppendLine(_line);
 
-                if (_spell.Targets != 0)
-                    _rtb.AppendFormatLine("Targets Mask = 0x{0:X8} ({1})", _spell.Targets, (SpellCastTargetFlags)_spell.Targets);
+                if (_spell.SpellTargetRestrictionsList != null)
+                {
+                    foreach (var TargetRestriction in _spell.SpellTargetRestrictionsList)
+                    {
+                        if (TargetRestriction.Targets != 0)
+                            _rtb.AppendFormatLine("Targets Mask = 0x{0:X8} ({1})", TargetRestriction.Targets, (SpellCastTargetFlags)TargetRestriction.Targets);
 
-                if (_spell.TargetCreatureType != 0)
-                    _rtb.AppendFormatLine("Creature Type Mask = 0x{0:X8} ({1})",
-                        _spell.TargetCreatureType, (CreatureTypeMask)_spell.TargetCreatureType);
+                        if (TargetRestriction.TargetCreatureType != 0)
+                            _rtb.AppendFormatLine("Creature Type Mask = 0x{0:X8} ({1})",
+                                TargetRestriction.TargetCreatureType, (CreatureTypeMask)TargetRestriction.TargetCreatureType);
+
+                        if (TargetRestriction.MaxAffectedTargets != 0)
+                            _rtb.AppendFormatLine("MaxAffectedTargets: {0}", TargetRestriction.MaxAffectedTargets);
+                    }
+                }
 
                 if (_spell.Stances != 0)
                     _rtb.AppendFormatLine("Stances: {0}", (ShapeshiftFormMask)_spell.Stances);
@@ -138,8 +153,8 @@ namespace SpellWork.Spell
                         _rtb.AppendLine();
                 }
 
-                _rtb.AppendFormatLine("Spell Level = {0}, base {1}, max {2}, maxTarget {3}",
-                    _spell.SpellLevel, _spell.BaseLevel, _spell.MaxLevel, _spell.MaxTargetLevel);
+                _rtb.AppendFormatLine("Spell Level = {0}, base {1}, max {2}",
+                    _spell.SpellLevel, _spell.BaseLevel, _spell.MaxLevel);
 
                 if (_spell.EquippedItemClass != 0)
                 {
@@ -189,6 +204,11 @@ namespace SpellWork.Spell
 
                 _rtb.AppendLine(_spell.Duration);
 
+                if (_spell.RuneCost != null)
+                {
+                    _rtb.AppendFormatLine("Rune Cost: {0}, {1}, {2}, {3}, Power Gain: {4}", _spell.RuneCost.RuneCost[0], _spell.RuneCost.RuneCost[1], _spell.RuneCost.RuneCost[2], _spell.RuneCost.UnkMop, _spell.RuneCost.RunicPowerGain);
+                }
+
                 if (_spell.SpellPowerList != null)
                 {
                     foreach (var spellPower in _spell.SpellPowerList)
@@ -200,6 +220,18 @@ namespace SpellWork.Spell
                                 (Powers)spellPower.PowerType, spellPower.ManaCost == 0 ? spellPower.ManaCostPercentage + " %" : spellPower.ManaCost.ToString());
                             _rtb.AppendFormatIfNotNull(" + lvl * {0}", spellPower.ManaCostPerlevel);
                             _rtb.AppendFormatIfNotNull(" + {0} Per Second", spellPower.ManaPerSecond);
+
+                            if (spellPower.RequiredAura > 0)
+                            {
+                                _rtb.AppendFormat(" if aura {0}", spellPower.RequiredAura);
+                                if (DBC.DBC.Spell.ContainsKey(spellPower.RequiredAura))
+                                    _rtb.AppendFormat(" ({0})", DBC.DBC.Spell[spellPower.RequiredAura].SpellName);
+                            }
+                            if (spellPower.Difficulty > 0)
+                            {
+                                _rtb.AppendFormat(" if {0}", (Difficulty)spellPower.Difficulty);
+                            }
+
                             _rtb.AppendLine();
                         }
                     }
@@ -219,9 +251,6 @@ namespace SpellWork.Spell
 
                 if (_spell.TargetAuraStateNot != 0)
                     _rtb.AppendFormatLine("TargetAuraStateNot = {0} ({1})", _spell.TargetAuraStateNot, (AuraState)_spell.TargetAuraStateNot);
-
-                if (_spell.MaxAffectedTargets != 0)
-                    _rtb.AppendFormatLine("MaxAffectedTargets = {0}", _spell.MaxAffectedTargets);
 
                 AppendSpellAura();
 
@@ -337,7 +366,7 @@ namespace SpellWork.Spell
                     continue;
 
                 _rtb.SetBold();
-                _rtb.AppendFormatLine("Effect {0}: Id {1} ({2}) {3}", effect.Index, effect.Type, (SpellEffects)effect.Type, (Difficulty)effect.Unk);
+                _rtb.AppendFormatLine("Effect {0}: Id {1} ({2}) {3}", effect.Index, effect.Type, (SpellEffects)effect.Type, (Difficulty)effect.Difficulty);
                 _rtb.SetDefaultStyle();
 
                 if (effect.SpellEffectScalingEntry != null && effect.SpellEffectScalingEntry.Multiplier != 0.0f && _spell.Scaling != null && _spell.Scaling.PlayerClass != 0 && _spell.Scaling.PlayerClass != 1000 && _spell.Scaling.PlayerClass >= -1) // seems like class 1000 is not using any scaling, -2 and smaller is..no idea

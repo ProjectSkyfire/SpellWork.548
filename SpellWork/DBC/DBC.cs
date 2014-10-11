@@ -46,9 +46,11 @@ namespace SpellWork.DBC
         public static Dictionary<uint, List<SpellPowerEntry>> _spellPower = new Dictionary<uint, List<SpellPowerEntry>>();
         public static DBCStorage<SpellRadiusEntry> SpellRadius = new DBCStorage<SpellRadiusEntry>();
         public static DBCStorage<SpellRangeEntry> SpellRange = new DBCStorage<SpellRangeEntry>();
+        public static DBCStorage<SpellRuneCostEntry> SpellRuneCost = new DBCStorage<SpellRuneCostEntry>();
         public static DBCStorage<SpellScalingEntry> SpellScaling = new DBCStorage<SpellScalingEntry>();
         public static DBCStorage<SpellShapeshiftEntry> SpellShapeshift = new DBCStorage<SpellShapeshiftEntry>();
         public static DBCStorage<SpellTargetRestrictionsEntry> SpellTargetRestrictions = new DBCStorage<SpellTargetRestrictionsEntry>();
+        public static Dictionary<uint, List<SpellTargetRestrictionsEntry>> _spellTargetRestrictions = new Dictionary<uint, List<SpellTargetRestrictionsEntry>>();
         public static DBCStorage<SpellTotemsEntry> SpellTotems = new DBCStorage<SpellTotemsEntry>();
 
         public static DB2Storage<ItemEntry> Item = new DB2Storage<ItemEntry>();
@@ -108,7 +110,7 @@ namespace SpellWork.DBC
             {
                 uint EffectSpellId = effect.SpellId;
                 uint effIdx = effect.Index;
-                Difficulty diff = (Difficulty)effect.Unk;
+                Difficulty diff = (Difficulty)effect.Difficulty;
                 if (!SpellEffectLists.ContainsKey(EffectSpellId))
                 {
                     List<SpellEffectEntry> temp = new List<SpellEffectEntry>();
@@ -129,6 +131,28 @@ namespace SpellWork.DBC
                     DBC.SpellTriggerStore.Add(triggerid, ids);
                 }
             }
+
+            foreach (var sp in DBC.SpellPower)
+            {
+                if (!DBC._spellPower.ContainsKey(sp.SpellId))
+                {
+                    List<SpellPowerEntry> spl = new List<SpellPowerEntry>();
+                    DBC._spellPower.Add(sp.SpellId, spl);
+                }
+                DBC._spellPower[sp.SpellId].Add(sp);
+            }
+            DBC.SpellPower.Clear();
+
+            foreach (var tr in DBC.SpellTargetRestrictions)
+            {
+                if (!DBC._spellTargetRestrictions.ContainsKey(tr.SpellId))
+                {
+                    List<SpellTargetRestrictionsEntry> str = new List<SpellTargetRestrictionsEntry>();
+                    DBC._spellTargetRestrictions.Add(tr.SpellId, str);
+                }
+                DBC._spellTargetRestrictions[tr.SpellId].Add(tr);
+            }
+            DBC.SpellTargetRestrictions.Clear();
 
             foreach (var dbcInfo in Spell.Records)
                 SpellInfoStore.Add(dbcInfo.Id, new SpellInfoHelper(dbcInfo));

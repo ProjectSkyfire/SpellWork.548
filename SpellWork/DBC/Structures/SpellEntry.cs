@@ -34,21 +34,6 @@ namespace SpellWork.DBC.Structures
         public uint ResearchProject;
         public uint SpellMiscId;
 
-        /*public SpellEffectEntry SpellEffect(int index, Difficulty diff)
-        {
-            if (DBC.SpellEffects.ContainsKey(Id))
-            {
-                if (DBC.SpellEffects[Id].ContainsKey((uint)index))
-                {
-                    if (DBC.SpellEffects[Id][(uint)index].ContainsKey(diff))
-                    {
-                        return DBC.SpellEffects[Id][(uint)index][diff];
-                    }
-                }
-            }
-            return null;
-        }*/
-
         public List<SpellPowerEntry> SpellPowerList
         {
             get
@@ -129,9 +114,14 @@ namespace SpellWork.DBC.Structures
             get { return SpellShapeshiftId != 0 && DBC.SpellShapeshift.ContainsKey(SpellShapeshiftId) ? DBC.SpellShapeshift[SpellShapeshiftId] : null; }
         }
 
-        public SpellTargetRestrictionsEntry TargetRestrictions
+        public List<SpellTargetRestrictionsEntry> TargetRestrictionsList
         {
-            get { return SpellTargetRestrictionsId != 0 && DBC.SpellTargetRestrictions.ContainsKey(SpellTargetRestrictionsId) ? DBC.SpellTargetRestrictions[SpellTargetRestrictionsId] : null; }
+            get
+            {
+                if (DBC._spellTargetRestrictions.ContainsKey(Id))
+                    return DBC._spellTargetRestrictions[Id];
+                return null;
+            }
         }
 
         public SpellTotemsEntry Totems

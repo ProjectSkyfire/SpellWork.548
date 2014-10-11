@@ -24,10 +24,13 @@ namespace SpellWork.Spell
         public uint AttributesEx8 = 0;
         public uint AttributesEx9 = 0;
         public uint AttributesEx10 = 0;
+        public uint AttributesEx11 = 0;
+        public uint AttributesEx12 = 0;
+        public uint AttributesEx13 = 0;
         public ulong Stances = 0;                                     // 12-13    m_shapeshiftMask
         public ulong StancesNot = 0;                                  // 14-15    m_shapeshiftExclude
-        public uint Targets = 0;                                      // 16       m_targets
-        public uint TargetCreatureType = 0;                           // 17       m_targetCreatureType
+        //public uint Targets = 0;                                      // 16       m_targets
+        //public uint TargetCreatureType = 0;                           // 17       m_targetCreatureType
         public uint RequiresSpellFocus = 0;                           // 18       m_requiresSpellFocus
         public uint FacingCasterFlags = 0;                            // 19       m_facingCasterFlags
         public uint CasterAuraState = 0;                              // 20       m_casterAuraState
@@ -76,10 +79,10 @@ namespace SpellWork.Spell
         //public uint ManaCostPercentage;                           // 204      m_manaCostPct
         public uint StartRecoveryCategory = 0;                        // 205      m_startRecoveryCategory
         public uint StartRecoveryTime = 0;                            // 206      m_startRecoveryTime
-        public uint MaxTargetLevel = 0;                               // 207      m_maxTargetLevel
+        //public uint MaxTargetLevel = 0;                               // 207      m_maxTargetLevel
         public uint SpellFamilyName = 0;                              // 208      m_spellClassSet
         public uint[] SpellFamilyFlags;                           // 209-211  m_spellClassMask
-        public uint MaxAffectedTargets = 0;                           // 212      m_maxTargets
+        //public uint MaxAffectedTargets = 0;                           // 212      m_maxTargets
         public uint DmgClass = 0;                                     // 213      m_defenseType
         public uint PreventionType = 0;                               // 214      m_preventionType
         public int StanceBarOrder = 0;                                // 215      m_stanceBarOrder not used
@@ -96,6 +99,8 @@ namespace SpellWork.Spell
         public uint SpellDifficultyId = 0;                            // 233      3.3.0                           // 239      3.3.0
         public SpellScalingEntry Scaling;
         public List<SpellPowerEntry> SpellPowerList;
+        public List<SpellTargetRestrictionsEntry> SpellTargetRestrictionsList;
+        public SpellRuneCostEntry RuneCost;
 
         public string CastTime
         {
@@ -212,6 +217,9 @@ namespace SpellWork.Spell
                 AttributesEx8 = dbcData.MiscEntry.AttributesEx8;
                 AttributesEx9 = dbcData.MiscEntry.AttributesEx9;
                 AttributesEx10 = dbcData.MiscEntry.AttributesEx10;
+                AttributesEx11 = dbcData.MiscEntry.AttributesEx11;
+                AttributesEx12 = dbcData.MiscEntry.AttributesEx12;
+                AttributesEx13 = dbcData.MiscEntry.AttributesEx13;
                 CastingTimeIndex = dbcData.MiscEntry.CastingTimeIndex;
                 DurationIndex = dbcData.MiscEntry.DurationIndex;
                 //PowerType = dbcData.MiscEntry.PowerType;
@@ -232,7 +240,8 @@ namespace SpellWork.Spell
             SpellDescriptionVariableID = dbcData.SpellDescriptionVariableID;
             SpellDifficultyId = dbcData.SpellDifficultyId;
 
-
+            if (DBC.DBC.SpellRuneCost.ContainsKey(RuneCostID))
+                RuneCost = DBC.DBC.SpellRuneCost[RuneCostID];
 
             // SpellCategories.dbc
             var cat = dbcData.Category;
@@ -256,14 +265,7 @@ namespace SpellWork.Spell
             }
 
             // SpellTargetRestrictions.dbc
-            var targetRestrictions = dbcData.TargetRestrictions;
-            if (targetRestrictions != null)
-            {
-                Targets = targetRestrictions.Targets;
-                TargetCreatureType = targetRestrictions.TargetCreatureType;
-                MaxAffectedTargets = targetRestrictions.MaxAffectedTargets;
-                MaxTargetLevel = targetRestrictions.MaxTargetLevel;
-            }
+            SpellTargetRestrictionsList = dbcData.TargetRestrictionsList;
 
             // SpellCastingRequirements.dbc
             var castingRequirements = dbcData.CastingRequirements;
@@ -336,7 +338,6 @@ namespace SpellWork.Spell
             if (classOptions != null)
             {
                 ModalNextSpell = classOptions.ModalNextSpell;
-                _Description = String.IsNullOrEmpty(Description) ? classOptions.Description : _Description;
                 SpellFamilyName = classOptions.SpellFamilyName;
                 SpellFamilyFlags = (uint[])classOptions.SpellFamilyFlags.Clone();
             }
