@@ -280,7 +280,38 @@ namespace SpellWork.Spell
         SPELL_EFFECT_180                              = 180, // Unused (4.3.4)
         SPELL_EFFECT_181                              = 181, // Unused (4.3.4)
         SPELL_EFFECT_182                              = 182,
-        TOTAL_SPELL_EFFECTS                           = 183
+        SPELL_EFFECT_183                              = 183,
+        SPELL_EFFECT_184                              = 184,
+        SPELL_EFFECT_185                              = 185,
+        SPELL_EFFECT_186                              = 186,
+        SPELL_EFFECT_187                              = 187,
+        SPELL_EFFECT_188                              = 188,
+        SPELL_EFFECT_189                              = 189,
+        SPELL_EFFECT_190                              = 190,
+        SPELL_EFFECT_191                              = 191,
+        SPELL_EFFECT_192                              = 192,
+        SPELL_EFFECT_193                              = 193,
+        SPELL_EFFECT_194                              = 194,
+        SPELL_EFFECT_195                              = 195,
+        SPELL_EFFECT_196                              = 196,
+        SPELL_EFFECT_197                              = 197,
+        SPELL_EFFECT_198                              = 198,
+        SPELL_EFFECT_199                              = 199,
+        SPELL_EFFECT_200                              = 200,
+        SPELL_EFFECT_201                              = 201,
+        SPELL_EFFECT_202                              = 202,
+        SPELL_EFFECT_203                              = 203,
+        SPELL_EFFECT_204                              = 204,
+        SPELL_EFFECT_205                              = 205,
+        SPELL_EFFECT_206                              = 206,
+        SPELL_EFFECT_207                              = 207,
+        SPELL_EFFECT_208                              = 208,
+        SPELL_EFFECT_209                              = 209,
+        SPELL_EFFECT_210                              = 210,
+        SPELL_EFFECT_211                              = 211,
+        SPELL_EFFECT_212                              = 212,
+        SPELL_EFFECT_213                              = 213,
+        TOTAL_SPELL_EFFECTS                           = 214
     };
 
     /// <summary>
